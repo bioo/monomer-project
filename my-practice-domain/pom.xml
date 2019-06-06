@@ -19,7 +19,7 @@
     <dependencies>
         <dependency>
             <groupId>com.practice</groupId>
-            <artifactId>my-practicep-commons</artifactId>
+            <artifactId>my-practice-commons</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
     </dependencies>
