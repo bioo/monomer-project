@@ -12,10 +12,6 @@ import java.util.Date;
  */
 @Data
 public class TbUser extends BaseEntity {
-    //0:禁止登录
-    public static final Long _0 = new Long(0);
-    //1:有效
-    public static final Long _1 = new Long(1);
 
     /**
      * 用户名

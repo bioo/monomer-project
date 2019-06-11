@@ -84,12 +84,23 @@ public class SampleRealm extends AuthorizingRealm {
         TbUser user = this.tbUserService.login(token.getUsername(),token.getPswd());
         if(null == user){
             throw new AccountException("帐号或密码不正确！");
-            /**
-             * 如果用户的status为禁用。那么就抛出<code>DisabledAccountException</code>
-             */
-        }else if(TbUser._0.equals(user.getStatus())){
-            throw new DisabledAccountException("帐号已经禁止登录！");
-        }else{
+        }
+        /**
+         * 如果用户的status为禁用。那么就抛出<code>DisabledAccountException</code>
+         */
+        else if(user.getStatus() == Constant.UserStatus.STATUS_LOCKED){
+            throw new LockedAccountException("帐号已经禁止登录！");
+        }
+        /**
+         * 如果用户的有效期已到期。那么就抛出<code>DisabledAccountException</code>
+         */
+        else if(user.getOverdueTime() != null && user.getOverdueTime().before(new Date())){
+            throw new DisabledAccountException("您的账号已到期！");
+        }
+        /**
+         * 更新最终登陆时间
+         */
+        else{
             //更新登录时间 last login time
             user.setLastLoginTime(new Date());
             this.tbUserService.updateByPrimaryKeySelective(user);
