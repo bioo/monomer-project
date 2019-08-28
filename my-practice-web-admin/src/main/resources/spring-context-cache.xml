@@ -4,21 +4,37 @@
 	xsi:schemaLocation="
     		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd"
 	default-lazy-init="false">
-		
-	 <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
-        <property name="maxIdle" value="100"/><!-- 最大闲置 -->
-        <property name="minIdle" value="10"/><!-- 最小闲置 -->
-        <property name="testOnBorrow" value="true"/><!-- 可以获取 -->
-<!--        <property name="testOnReturn" value="true"/>-->
-    </bean>
+	<!-- 连接池配置 -->
+	<bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+		<!-- 最大连接数 -->
+		<property name="maxTotal" value="${redis.maxTotal}" />
+		<!-- 最大空闲连接数 -->
+		<property name="maxIdle" value="${redis.maxIdle}" />
+		<!-- 最小空闲连接数 -->
+		<property name="minIdle" value="${redis.minIdle}" />
+		<!-- 获取连接时的最大等待毫秒数,小于零:阻塞不确定的时间,默认-1 -->
+		<property name="maxWaitMillis" value="${redis.maxWaitMillis}" />
+		<!-- 连接最小空闲时间 -->
+		<property name="minEvictableIdleTimeMillis" value="${redis.minEvictableIdleTimeMillis}" />
+		<!-- 每次释放连接的最大数目 -->
+		<property name="numTestsPerEvictionRun" value="${redis.numTestsPerEvictionRun}" />
+		<!-- 释放连接的扫描间隔（毫秒） -->
+		<property name="timeBetweenEvictionRunsMillis" value="${redis.timeBetweenEvictionRunsMillis}" />
+		<!-- 在获取连接的时候检查有效性, 默认false -->
+		<property name="testOnBorrow" value="${redis.testOnBorrow}" />
+		<property name="testOnReturn" value="${redis.testOnReturn}" />
+		<!-- 在空闲时检查有效性, 默认false -->
+		<property name="testWhileIdle" value="${redis.testWhileIdle}" />
+	</bean>
+
 	<!-- redis 配置,也可以把配置挪到properties配置文件中,再读取 -->
 	<bean id="jedisPool" class="redis.clients.jedis.JedisPool">
 		<constructor-arg index="0" ref="jedisPoolConfig" />
-		<constructor-arg index="1" value="127.0.0.1" name="host" type="java.lang.String"/>
+		<constructor-arg index="1" value="${redis.host}" name="host" type="java.lang.String"/>
 		<!-- 端口，默认6379 -->
-	    <constructor-arg index="2" value="6379"  name="port" type="int"/>
-	    <constructor-arg index="3" value="5000"  name="timeout" type="int"/>
-		<constructor-arg index="4" value="zhao1234" name="password" type="java.lang.String"/>
+	    <constructor-arg index="2" value="${redis.port}"  name="port" type="int"/>
+	    <constructor-arg index="3" value="${redis.timeout}"  name="timeout" type="int"/>
+		<constructor-arg index="4" value="${redis.password}" name="password" type="java.lang.String"/>
 	    <!-- 如果你需要配置密码，请打开这里。
 	        <constructor-arg index="4" value="你的密码" name="password" type="java.lang.String"/>
 	    -->

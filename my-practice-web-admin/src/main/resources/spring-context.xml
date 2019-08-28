@@ -36,6 +36,7 @@
                 <value>classpath:jdbc.properties</value>
                 <value>classpath:config.properties</value>
                 <value>classpath:shiro-config.properties</value>
+                <value>classpath:redis-config.properties</value>
             </list>
         </property>
     </bean>
